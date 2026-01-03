@@ -1,0 +1,1732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SWARALIPI - Interactive Pitch Deck</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600;700&family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* CSS Variables */
+        :root {
+            --gold: #FFD700;
+            --brown: #8B4513;
+            --beige: #F5F5DC;
+            --teal: #20B2AA;
+            --pink: #FFB6C1;
+            --dark-bg: #0a0a1a;
+            --medium-bg: #1a1a2e;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --text-light: #f0f0f0;
+            --text-medium: #cccccc;
+        }
+
+        /* Reset & Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* Typography */
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            color: var(--gold);
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+            letter-spacing: 2px;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            color: var(--teal);
+            border-bottom: 2px solid var(--teal);
+            padding-bottom: 0.5rem;
+            margin-top: 2rem;
+        }
+
+        h3 {
+            font-size: 1.8rem;
+            color: var(--pink);
+            margin-top: 1.5rem;
+        }
+
+        p {
+            font-size: 1.1rem;
+            margin-bottom: 1.2rem;
+            color: var(--text-medium);
+        }
+
+        .classical-text {
+            font-family: 'Crimson Text', serif;
+            font-size: 1.2rem;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: rgba(10, 10, 26, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: var(--gold);
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--beige);
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            padding: 0.5rem 0;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--gold);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: var(--gold);
+            left: 0;
+            bottom: 0;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            font-size: 1.8rem;
+            color: var(--beige);
+        }
+
+        /* Hero Section with Music Aesthetic */
+        .hero-section {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            padding: 0 2rem;
+            margin-top: 0;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(255, 215, 0, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(32, 178, 170, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(255, 182, 193, 0.1) 0%, transparent 50%);
+            background-color: var(--dark-bg);
+        }
+
+        /* Music notation animation */
+        .music-notes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .music-note {
+            position: absolute;
+            font-size: 2rem;
+            color: rgba(255, 215, 0, 0.3);
+            opacity: 0;
+        }
+
+        .note-1 { top: 10%; left: 5%; animation: floatNote 15s infinite linear; }
+        .note-2 { top: 20%; left: 15%; animation: floatNote 18s infinite linear 2s; }
+        .note-3 { top: 30%; left: 85%; animation: floatNote 20s infinite linear 4s; }
+        .note-4 { top: 50%; left: 10%; animation: floatNote 16s infinite linear 1s; }
+        .note-5 { top: 70%; left: 80%; animation: floatNote 22s infinite linear 3s; }
+        .note-6 { top: 80%; left: 20%; animation: floatNote 19s infinite linear 5s; }
+
+        @keyframes floatNote {
+            0% { transform: translateY(100px) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.5; }
+            90% { opacity: 0.5; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(10, 10, 26, 0.8) 0%, rgba(26, 26, 46, 0.7) 100%);
+            z-index: -1;
+        }
+
+        .hero-content {
+            text-align: center;
+            max-width: 900px;
+            z-index: 2;
+            padding: 3rem;
+            background-color: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-content h1 {
+            margin-bottom: 1rem;
+        }
+
+        .tagline {
+            font-family: 'Crimson Text', serif;
+            font-size: 1.8rem;
+            color: var(--beige);
+            font-style: italic;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-details {
+            font-size: 1.2rem;
+            color: var(--teal);
+            margin-top: 1.5rem;
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .slide {
+            background-color: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            border: 1px solid rgba(255, 215, 0, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .slide:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Special Styling for Elements */
+        .logline {
+            font-family: 'Crimson Text', serif;
+            font-size: 1.3rem;
+            font-style: italic;
+            background-color: rgba(255, 215, 0, 0.1);
+            padding: 2rem;
+            border-left: 5px solid var(--gold);
+            margin: 2rem 0;
+            color: var(--beige);
+        }
+
+        .character-card {
+            background-color: rgba(255, 255, 255, 0.08);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 10px;
+            border-left: 5px solid var(--pink);
+            transition: transform 0.3s ease;
+        }
+
+        .character-card:hover {
+            transform: translateX(5px);
+        }
+
+        .character-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline {
+            display: grid;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .timeline-item {
+            background-color: rgba(255, 255, 255, 0.08);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 5px solid var(--brown);
+        }
+
+        .timeline-year {
+            font-size: 1.2rem;
+            color: var(--teal);
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .theme-box {
+            background-color: rgba(32, 178, 170, 0.2);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 10px;
+            border-left: 5px solid var(--teal);
+        }
+
+        .location-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .location-card {
+            background-color: rgba(255, 255, 255, 0.08);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-top: 3px solid var(--pink);
+        }
+
+        /* Key Visuals Grid */
+        .key-visuals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .visual-card {
+            background-color: rgba(0, 0, 0, 0.3);
+            border: 2px dashed rgba(255, 215, 0, 0.5);
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .visual-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(255, 215, 0, 0.2);
+        }
+
+        .visual-title {
+            color: var(--gold);
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            font-weight: bold;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .visual-placeholder {
+            background-color: rgba(0, 0, 0, 0.3);
+            border: 2px dashed var(--gold);
+            border-radius: 10px;
+            padding: 3rem;
+            text-align: center;
+            margin: 1rem 0;
+            color: var(--pink);
+            font-style: italic;
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 200px;
+        }
+
+        .visual-description {
+            color: var(--beige);
+            font-size: 0.95rem;
+            font-style: italic;
+            margin-top: 1rem;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .stat-box {
+            background-color: rgba(255, 215, 0, 0.1);
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            color: var(--gold);
+            font-weight: bold;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            color: var(--pink);
+            margin-top: 0.5rem;
+        }
+
+        /* Budget Table */
+        .budget-table {
+            width: 100%;
+            margin-top: 2rem;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+        }
+
+        .budget-table th {
+            background-color: rgba(255, 215, 0, 0.2);
+            padding: 1rem;
+            text-align: left;
+            color: var(--gold);
+            font-size: 1.1rem;
+        }
+
+        .budget-table td {
+            padding: 0.8rem 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            vertical-align: top;
+        }
+
+        .budget-table tr:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .total-row {
+            font-weight: bold;
+            font-size: 1.2rem;
+            background-color: rgba(255, 215, 0, 0.15);
+            color: var(--gold);
+        }
+
+        /* Contact Section */
+        .contact-section {
+            background-color: rgba(139, 69, 19, 0.1);
+            border-radius: 15px;
+            padding: 3rem;
+            margin-top: 2rem;
+            border: 1px solid rgba(139, 69, 19, 0.3);
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .contact-card {
+            background-color: rgba(255, 255, 255, 0.08);
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.3s ease;
+            border-top: 3px solid var(--teal);
+        }
+
+        .contact-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .contact-icon {
+            font-size: 2.5rem;
+            color: var(--gold);
+            margin-bottom: 1rem;
+        }
+
+        .contact-detail {
+            font-size: 1.2rem;
+            color: var(--beige);
+            margin-top: 0.5rem;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+            color: var(--text-medium);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-quote {
+            font-family: 'Crimson Text', serif;
+            font-size: 1.3rem;
+            font-style: italic;
+            color: var(--teal);
+            margin-top: 1rem;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 1200px) {
+            .container {
+                max-width: 95%;
+            }
+        }
+
+        @media (max-width: 992px) {
+            h1 {
+                font-size: 2.8rem;
+            }
+
+            h2 {
+                font-size: 2.2rem;
+            }
+
+            .container {
+                padding: 1.5rem;
+            }
+
+            .slide {
+                padding: 2.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background-color: rgba(10, 10, 26, 0.98);
+                backdrop-filter: blur(10px);
+                flex-direction: column;
+                align-items: center;
+                padding: 2rem 0;
+                clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+                transition: clip-path 0.5s ease;
+                z-index: 999;
+            }
+
+            .nav-links.active {
+                clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+            }
+
+            .nav-links li {
+                margin: 1rem 0;
+            }
+
+            .hamburger {
+                display: block;
+            }
+
+            .hero-content {
+                padding: 2rem;
+            }
+
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .tagline {
+                font-size: 1.5rem;
+            }
+
+            .hero-details {
+                font-size: 1.1rem;
+            }
+
+            .budget-table {
+                font-size: 0.85rem;
+            }
+
+            .budget-table th,
+            .budget-table td {
+                padding: 0.6rem 0.8rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .slide {
+                padding: 1.8rem;
+            }
+
+            h1 {
+                font-size: 2.2rem;
+            }
+
+            h2 {
+                font-size: 1.8rem;
+            }
+
+            .logline {
+                font-size: 1.1rem;
+                padding: 1.5rem;
+            }
+
+            .contact-section {
+                padding: 2rem;
+            }
+
+            .key-visuals-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .visual-title {
+                min-height: auto;
+            }
+        }
+
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            background-color: var(--gold);
+            color: var(--dark-bg);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 999;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background-color: var(--teal);
+            color: white;
+            transform: translateY(-5px);
+        }
+
+        /* Lists */
+        ul {
+            margin-left: 1.5rem;
+            margin-top: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.8rem;
+            font-size: 1.05rem;
+            color: var(--text-medium);
+        }
+
+        strong {
+            color: var(--beige);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <a href="#" class="logo">SWARALIPI</a>
+        <ul class="nav-links">
+            <li><a href="#story">Story</a></li>
+            <li><a href="#synopsis">Synopsis</a></li>
+            <li><a href="#characters">Characters</a></li>
+            <li><a href="#timeline">Timeline</a></li>
+            <li><a href="#themes">Themes</a></li>
+            <li><a href="#locations">Locations</a></li>
+            <li><a href="#visuals">Visuals</a></li>
+            <li><a href="#production">Production</a></li>
+            <li><a href="#budget">Budget</a></li>
+            <li><a href="#audience">Audience</a></li>
+            <li><a href="#comparables">Comparables</a></li>
+            <li><a href="#whynow">Why Now</a></li>
+            <li><a href="#vision">Director's Vision</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <div class="hamburger" id="hamburger">
+            <i class="fas fa-bars"></i>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section" id="home">
+        <div class="hero-bg">
+            <div class="music-notes">
+                <div class="music-note note-1">♩</div>
+                <div class="music-note note-2">♪</div>
+                <div class="music-note note-3">♫</div>
+                <div class="music-note note-4">♬</div>
+                <div class="music-note note-5">𝄞</div>
+                <div class="music-note note-6">𝄢</div>
+            </div>
+            <div class="hero-overlay"></div>
+        </div>
+        <div class="hero-content">
+            <h1>SWARALIPI</h1>
+            <p class="tagline">The Musical Notation</p>
+            <p class="classical-text">A Film About Art, Sacrifice, and the Price of Devotion</p>
+            <p class="hero-details">Genre: Musical Drama | Runtime: 150-165 minutes | Language: Bengali/Hindi</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- The Story Section -->
+        <div class="slide" id="story">
+            <h2>The Story</h2>
+            <div class="logline">
+                A devoted Rabindra sangeet singer rises from the lanes of Kolkata to become the celebrated voice of tradition, only to watch her world crumble when her filmmaker husband's betrayal, her own artistic compromises, and a rapidly changing music industry strip away everything she holds sacred—leading to one final, fatal performance that becomes her redemption.
+            </div>
+            <p><strong>It's A Star Is Born meets The Lunchbox, with the emotional depth of Guru Dutt and the cultural richness of Satyajit Ray.</strong></p>
+        </div>
+
+        <!-- Synopsis Section -->
+        <div class="slide" id="synopsis">
+            <h2>Three-Act Synopsis</h2>
+            
+            <h3>Act One: The Making of a Nightingale (1970-1983)</h3>
+            <p>Young Ananya Sen discovers her calling when she hears Rabindra sangeet on the radio during Durga Puja. Trained by legendary guru Malabika Mukherjee, she becomes a devoted purist. At 23, she falls in love with Vikram Chatterjee, a charismatic film director from Mumbai, and marries him despite her guru's warnings. She moves to Mumbai, carrying her tanpura and her dreams.</p>
+            
+            <h3>Act Two: Rise and Fall (1983-2003)</h3>
+            <p>Ananya becomes "The Nightingale of Tagore," touring nationally while balancing motherhood poorly. At her career peak—winning the Sangeet Natak Akademi Award—she discovers Vikram's affair with actress Rhea Kapoor. The betrayal triggers a 20-year spiral: Vikram continues the affair openly, her voice fails from stress and alcoholism, the music industry shifts to pop, her son resents her, and she loses everything. After a suicide attempt, she returns to Kolkata, broken and voiceless.</p>
+            
+            <h3>Act Three: Redemption (2003-2012)</h3>
+            <p>Desperate, Ananya records fusion albums that betray her artistic soul but revive her career commercially. She reconciles with her estranged son and gets sober. At 52, knowing her heart is failing, she announces one final concert: a return to pure Rabindra sangeet at Rabindra Sadan. Against medical advice, she performs transcendently, reclaiming her true self. She collapses during the final song "Ekla Chalo Re" and dies in her son's arms—having given everything to her music.</p>
+        </div>
+
+        <!-- Characters Section -->
+        <div class="slide" id="characters">
+            <h2>Main Characters</h2>
+            
+            <div class="character-card">
+                <div class="character-name">ANANYA SEN (Protagonist)</div>
+                <p><strong>Age Range:</strong> 10-52 (1970-2012)</p>
+                <p>Pure-hearted Rabindra sangeet devotee who sacrifices everything for her art. Passionate, stubborn, emotionally vulnerable. Her voice is both her identity and her curse. A woman torn between tradition and survival, devotion and compromise.</p>
+                <p><strong>Arc:</strong> Innocent artist → Celebrated performer → Broken woman → Commercial sellout → Redeemed purist</p>
+            </div>
+            
+            <div class="character-card">
+                <div class="character-name">MALABIKA MUKHERJEE (Mentor)</div>
+                <p><strong>Age:</strong> 70s-80s</p>
+                <p>Renowned Rabindra sangeet guru and strict traditionalist. Mother figure to Ananya. Dies midway through the story, leaving Ananya spiritually unmoored. Represents the pure artistic tradition.</p>
+            </div>
+            
+            <div class="character-card">
+                <div class="character-name">VIKRAM CHATTERJEE (Antagonist/Husband)</div>
+                <p><strong>Age:</strong> 32-61</p>
+                <p>Charismatic film director from Mumbai. Artistic but self-destructive, serial philanderer. Represents modernity and the corruptive influence of commercial success. His betrayal sets Ananya's downfall in motion.</p>
+            </div>
+            
+            <div class="character-card">
+                <div class="character-name">ARIJIT SEN (Son)</div>
+                <p><strong>Age:</strong> Born 1988, ages 0-24 in film</p>
+                <p>Resents mother's absences during childhood. Becomes her savior in her darkest hour. Software engineer representing new India. His reconciliation with Ananya provides emotional catharsis.</p>
+            </div>
+            
+            <div class="character-card">
+                <div class="character-name">RHEA KAPOOR (The Other Woman)</div>
+                <p><strong>Age:</strong> Late 20s-40s</p>
+                <p>Glamorous Bollywood actress. Everything Ananya is not—modern, secular, unbound by tradition. Vikram's affair partner and later companion.</p>
+            </div>
+            
+            <div class="character-card">
+                <div class="character-name">SOUMEN DAS (Music Producer)</div>
+                <p><strong>Age:</strong> 30s</p>
+                <p>Young music producer who pushes Ananya toward commercial fusion. Represents the commodification of art. Not villainous, but pragmatic about the industry.</p>
+            </div>
+        </div>
+
+        <!-- Timeline Section -->
+        <div class="slide" id="timeline">
+            <h2>Story Timeline</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-year">1970-1975 | Childhood</div>
+                    <p>Ananya discovers Rabindra sangeet. Her father nurtures her passion. First exposure to live classical music.</p>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-year">1975-1982 | Training Years</div>
+                    <p>Rigorous training under Malabika Mukherjee. First public performance. Technology: Vinyl → Cassettes</p>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-year">1982-1983 | The Marriage</div>
+                    <p>Meets and marries Vikram Chatterjee. Moves to Mumbai. Begins professional recording career.</p>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-year">1983-1990 | The Rise</div>
+                    <p>Becomes "The Nightingale of Tagore." National tours. Birth of son Arijit (1988). Career vs. motherhood conflict begins.</p>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-year">1992 | MIDPOINT - The Betrayal</div>
+                    <p>Wins Sangeet Natak Akademi Award. Discovers Vikram's affair with Rhea Kapoor. Everything changes.</p>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-year">1992-1998 | The Descent</div>
+                    <p>Alcoholism develops. Music industry changes (CDs, MTV, pop dominance). Voice begins to fail. Technology: CDs, satellite TV</p>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-year">1996 | Guru's Death</div>
+                    <p>Malabika Mukherjee passes away. Ananya loses her spiritual anchor.</p>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-year">1998-2000 | Rock Bottom</div>
+                    <p>Voice completely fails. Financial ruin. Suicide attempt. Returns to Kolkata defeated.</p>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-year">2000-2003 | Dark Night</div>
+                    <p>Three years of isolation in childhood home. Depression. Loss of identity.</p>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-year">2003 | The Choice</div>
+                    <p>Offered fusion album deal. Arijit moves to Kolkata. Decision to compromise artistically.</p>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-year">2003-2007 | The Comeback</div>
+                    <p>"Notun Swar" fusion album becomes hit. MTV documentary. Commercial success but artistic hollowness. Technology: YouTube emerges</p>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-year">2007-2010 | Reconciliation</div>
+                    <p>Healing relationship with Arijit. Sobriety. Vocal therapy. Technology: Social media, streaming</p>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-year">2011-2012 | The Final Performance</div>
+                    <p>Heart disease diagnosis. Plans "Shesh Gaan" concert. Vikram seeks forgiveness. The fatal performance at Rabindra Sadan. Death on stage.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Themes Section -->
+        <div class="slide" id="themes">
+            <h2>Core Themes</h2>
+            
+            <div class="theme-box">
+                <h3>The Price of Art</h3>
+                <p>What does artistic devotion cost? Ananya gives her marriage, her motherhood, her health, and ultimately her life to music. The film asks: is such sacrifice noble or tragic? Can we judge those called to art by ordinary standards?</p>
+            </div>
+            
+            <div class="theme-box">
+                <h3>Tradition vs. Modernity</h3>
+                <p>Rabindra sangeet represents unchanging artistic purity. Fusion music represents commercial adaptation. The film mirrors India's own struggle—how do ancient traditions survive in a globalized world? Must they change to endure, or does change destroy their essence?</p>
+            </div>
+            
+            <div class="theme-box">
+                <h3>Women and Sacrifice</h3>
+                <p>Society expects women to be everything—perfect mothers, devoted wives, successful professionals. Ananya fails at being all three and is punished for it. Yet men face no such expectations. The film unflinchingly shows this double standard.</p>
+            </div>
+            
+            <div class="theme-box">
+                <h3>Identity and Compromise</h3>
+                <p>Who are we without our art? When Ananya loses her voice, she loses herself. When she compromises her artistic values for commercial success, she gains fame but loses her soul. Her journey is about reclaiming authentic identity.</p>
+            </div>
+            
+            <div class="theme-box">
+                <h3>Legacy and Immortality</h3>
+                <p>Ananya dies, but her music lives on. The young girl at the film's end suggests that art transcends death. Perhaps the sacrifice was worth it—not for Ananya's happiness, but for the beauty she left behind.</p>
+            </div>
+        </div>
+
+        <!-- Locations Section -->
+        <div class="slide" id="locations">
+            <h2>Primary Locations</h2>
+            
+            <div class="location-grid">
+                <div class="location-card">
+                    <h3>Kolkata (1970s-2012)</h3>
+                    <ul>
+                        <li>Ananya's childhood home (North Kolkata)</li>
+                        <li>Malabika's music school</li>
+                        <li>Rabindra Sadan (performance venue)</li>
+                        <li>Durga Puja pandals</li>
+                        <li>College Street area</li>
+                    </ul>
+                    <p><strong>Visual Style:</strong> Warm, nostalgic, timeless. Crumbling colonial architecture, narrow lanes, monsoon rains, yellow taxis, hand-pulled rickshaws.</p>
+                </div>
+                
+                <div class="location-card">
+                    <h3>Mumbai (1983-2000)</h3>
+                    <ul>
+                        <li>Ananya & Vikram's apartment (Bandra)</li>
+                        <li>Film studios</li>
+                        <li>Recording studios</li>
+                        <li>Bollywood party venues</li>
+                        <li>Concert halls</li>
+                    </ul>
+                    <p><strong>Visual Style:</strong> Modern, fast-paced, glamorous but hollow. High-rises, film sets, crowded streets, stark contrast to Kolkata's intimacy.</p>
+                </div>
+                
+                <div class="location-card">
+                    <h3>Interior Spaces (Key)</h3>
+                    <ul>
+                        <li>Practice rooms (intimate, warm)</li>
+                        <li>Ananya's childhood bedroom</li>
+                        <li>Mumbai apartment (evolving from hope to decay)</li>
+                        <li>Hospital room (suicide attempt)</li>
+                        <li>Recording studios (70s analog to 2000s digital)</li>
+                    </ul>
+                </div>
+                
+                <div class="location-card">
+                    <h3>Performance Venues</h3>
+                    <ul>
+                        <li>Small cultural programs (early career)</li>
+                        <li>Rabindra Sadan, Kolkata (bookends the story)</li>
+                        <li>National auditoriums (peak years)</li>
+                        <li>MTV studios (fusion era)</li>
+                        <li>Final concert stage (sacred space)</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <h3 style="margin-top: 40px;">Location Strategy for Budget</h3>
+            <p>To maximize production value within ₹50 lakhs budget:</p>
+            <ul>
+                <li><strong>Kolkata locations:</strong> Use actual heritage buildings, homes (with permissions), real Rabindra Sadan for exterior shots</li>
+                <li><strong>Mumbai sequences:</strong> Minimize, use controlled interior sets, stock footage for establishing shots</li>
+                <li><strong>Performance venues:</strong> Use theater spaces during off-hours, negotiate multi-day access</li>
+                <li><strong>Time periods:</strong> Suggest era through costume, props, color grading rather than expensive set dressing</li>
+            </ul>
+        </div>
+
+        <!-- Key Visuals Section (All 14 Moments) -->
+        <div class="slide" id="visuals">
+            <h2>Key Visual Moments</h2>
+            <p style="font-style: italic; color: var(--pink); margin-bottom: 30px;">These are the defining images that will stay with audiences long after the film ends. [Placeholder sections for concept art/stills]</p>
+            
+            <div class="key-visuals-grid">
+                <div class="visual-card">
+                    <div class="visual-title">1. Young Ananya Discovers Music</div>
+                    <div class="visual-placeholder">[Image Placeholder: 10-year-old girl in courtyard, radio glowing, Durga Puja lights in background]</div>
+                    <p class="visual-description">The innocence of pure love for art. Warm, nostalgic 1970s color palette.</p>
+                </div>
+                
+                <div class="visual-card">
+                    <div class="visual-title">2. Training with Malabika</div>
+                    <div class="visual-placeholder">[Image Placeholder: Guru and student in dawn riyaaz session, tanpura between them]</div>
+                    <p class="visual-description">The sacred teacher-student bond. Soft morning light through window.</p>
+                </div>
+                
+                <div class="visual-card">
+                    <div class="visual-title">3. The Wedding</div>
+                    <div class="visual-placeholder">[Image Placeholder: Ananya in red Bengali bridal sari, carrying tanpura, Vikram in frame]</div>
+                    <p class="visual-description">Hope and foreboding. Traditional meets modern.</p>
+                </div>
+                
+                <div class="visual-card">
+                    <div class="visual-title">4. Award Night / Discovery</div>
+                    <div class="visual-placeholder">[Image Placeholder: Split frame—Ananya holding award / Vikram kissing Rhea]</div>
+                    <p class="visual-description">The moment everything shatters. Dramatic lighting contrast.</p>
+                </div>
+                
+                <div class="visual-card">
+                    <div class="visual-title">5. The Descent</div>
+                    <div class="visual-placeholder">[Image Placeholder: Ananya alone with whiskey bottle, tanpura gathering dust in background]</div>
+                    <p class="visual-description">Addiction and loss. Dark, cold color palette.</p>
+                </div>
+                
+                <div class="visual-card">
+                    <div class="visual-title">6. Malabika's Funeral</div>
+                    <div class="visual-placeholder">[Image Placeholder: Ananya weeping at guru's feet, white mourning clothes]</div>
+                    <p class="visual-description">Loss of spiritual anchor. Rain, grief, helplessness.</p>
+                </div>
+                
+                <div class="visual-card">
+                    <div class="visual-title">7. The Empty Home</div>
+                    <div class="visual-placeholder">[Image Placeholder: Ananya in childhood bedroom, now aged and broken, listening to old recordings]</div>
+                    <p class="visual-description">Rock bottom. Stillness, decay, loneliness.</p>
+                </div>
+                
+                <div class="visual-card">
+                    <div class="visual-title">8. Fusion Recording Session</div>
+                    <div class="visual-placeholder">[Image Placeholder: Ananya in modern studio, electronic equipment, conflicted expression]</div>
+                    <p class="visual-description">The compromise. Cold digital aesthetic vs. warm tradition.</p>
+                </div>
+                
+                <div class="visual-card">
+                    <div class="visual-title">9. Reconciliation with Son</div>
+                    <div class="visual-placeholder">[Image Placeholder: Ananya and adult Arijit sharing chai, healing beginning]</div>
+                    <p class="visual-description">Forgiveness and understanding. Warm domestic intimacy.</p>
+                </div>
+                
+                <div class="visual-card">
+                    <div class="visual-title">10. Preparing for Final Concert</div>
+                    <div class="visual-placeholder">[Image Placeholder: Ananya in white sari, tuning tanpura, knowing this is goodbye]</div>
+                    <p class="visual-description">Peaceful acceptance. Ethereal, almost transcendent quality.</p>
+                </div>
+                
+                <div class="visual-card">
+                    <div class="visual-title">11. The Final Performance</div>
+                    <div class="visual-placeholder">[Image Placeholder: Ananya on stage, spotlight, arms spread, eyes closed in ecstasy]</div>
+                    <p class="visual-description">The moment of redemption. Radiant, beautiful, tragic.</p>
+                </div>
+                
+                <div class="visual-card">
+                    <div class="visual-title">12. The Collapse</div>
+                    <div class="visual-placeholder">[Image Placeholder: Ananya collapsing, Arijit rushing to stage, audience frozen]</div>
+                    <p class="visual-description">The ultimate sacrifice. Time suspended, heartbreaking.</p>
+                </div>
+                
+                <div class="visual-card">
+                    <div class="visual-title">13. Death in Son's Arms</div>
+                    <div class="visual-placeholder">[Image Placeholder: Arijit holding dying Ananya, her hand reaching to touch his face]</div>
+                    <p class="visual-description">Love and loss. Intimate, devastating, beautiful.</p>
+                </div>
+                
+                <div class="visual-card">
+                    <div class="visual-title">14. The Legacy</div>
+                    <div class="visual-placeholder">[Image Placeholder: Young girl watching Ananya's performance on laptop, mirroring opening]</div>
+                    <p class="visual-description">The cycle continues. Hope, immortality through art.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Production Overview -->
+        <div class="slide" id="production">
+            <h2>Production Overview</h2>
+            
+            <div class="stats">
+                <div class="stat-box">
+                    <div class="stat-number">42</div>
+                    <div class="stat-label">Years of Story</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">30-35</div>
+                    <div class="stat-label">Shooting Days</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">2.5-2.75</div>
+                    <div class="stat-label">Hours Runtime</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">₹50L</div>
+                    <div class="stat-label">Maximum Budget</div>
+                </div>
+            </div>
+            
+            <h3 style="margin-top: 40px;">Production Strategy</h3>
+            <ul>
+                <li><strong>Cast:</strong> Primarily Bengali/Hindi speaking actors. Lead role requires 4 actors (child, young adult, middle-aged, older). Focus on theatrical actors with musical ability.</li>
+                <li><strong>Shooting Format:</strong> Digital cinema cameras (BMPCC 6K or similar) to maximize quality while controlling costs</li>
+                <li><strong>Schedule:</strong> 30-35 day shoot over 6-7 weeks. Block shooting by location to minimize company moves.</li>
+                <li><strong>Music:</strong> Original Rabindra sangeet performances (public domain). One fusion track to be composed. Live recording during performance scenes for authenticity.</li>
+                <li><strong>VFX:</strong> Minimal. Period details through practical effects, costume, and color grading.</li>
+                <li><strong>Post-Production:</strong> 3-4 months for editing, color grading, sound design, music mixing</li>
+            </ul>
+        </div>
+
+        <!-- Detailed Budget Breakdown -->
+        <div class="slide" id="budget">
+            <h2>Detailed Budget Breakdown</h2>
+            <p style="color: var(--pink); margin-bottom: 30px;">Maximum Budget: ₹50,00,000 (₹50 Lakhs)</p>
+            
+            <table class="budget-table">
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Details</th>
+                        <th>Amount (INR)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>PRE-PRODUCTION</strong></td>
+                        <td></td>
+                        <td><strong>₹2,50,000</strong></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Script development & rights</td>
+                        <td>₹50,000</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Location scouting & permissions</td>
+                        <td>₹40,000</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Casting (4 actors for lead, supporting cast)</td>
+                        <td>₹60,000</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Production design planning</td>
+                        <td>₹40,000</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Rehearsals & music training for actors</td>
+                        <td>₹60,000</td>
+                    </tr>
+                    
+                    <tr>
+                        <td><strong>CAST</strong></td>
+                        <td></td>
+                        <td><strong>₹6,00,000</strong></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Lead actress (4 age ranges - primarily middle-aged & older actors)</td>
+                        <td>₹3,00,000</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Vikram (Husband)</td>
+                        <td>₹1,20,000</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Malabika (Guru)</td>
+                        <td>₹80,000</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Arijit (Son - 3 age ranges)</td>
+                        <td>₹60,000</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Supporting cast (Rhea, Soumen, parents, etc.)</td>
+                        <td>₹40,000</td>
+                    </tr>
+                    
+                    <tr>
+                        <td><strong>CREW</strong></td>
+                        <td></td>
+                        <td><strong>₹8,50,000</strong></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Director (35 days)</td>
+                        <td>₹2,50,000</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Cinematographer + Camera Assistant (35 days)</td>
+                        <td>₹2,00,000</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Sound recordist (35 days)</td>
+                        <td>₹1,20,000</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Production Designer + Art team</td>
+                        <td>₹1,50,000</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Costume designer</td>
+                        <td>₹60,000</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Makeup & Hair</td>
+                        <td>₹50,000</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Assistant Director + Production Assistants</td>
+                        <td>₹70,000</td>
+                    </tr>
+                    
+                    <tr>
+                        <td><strong>EQUIPMENT & RENTALS</strong></td>
+                        <td></td>
+                        <td><strong>₹6,00,000</strong></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Camera package (BMPCC 6K or similar - 35 days)</td>
+                        <td>₹2,50,000</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Lighting equipment rental</td>
+                        <td>₹2,00,000</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Sound equipment</td>
+                        <td>₹80,000</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Grip & electric</td>
+                        <td>₹70,000</td>
+                    </tr>
+                    
+                    <tr>
+                        <td><strong>LOCATIONS & PRODUCTION</strong></td>
+                        <td></td>
+                        <td><strong>₹5,50,000</strong></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Location fees (homes, Rabindra Sadan, studios)</td>
+                        <td>₹2,00,000</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Transportation (crew, equipment, cast)</td>
+                        <td>₹1,50,000</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Food & catering (35 days, crew of ~20)</td>
+                        <td>₹1,20,000</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Accommodation (non-local crew)</td>
+                        <td>₹80,000</td>
+                    </tr>
+                    
+                    <tr>
+                        <td><strong>ART DEPARTMENT</strong></td>
+                        <td></td>
+                        <td><strong>₹3,50,000</strong></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Period props & set dressing (1970s-2010s)</td>
+                        <td>₹1,50,000</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Costumes (multiple periods, lead actress aging)</td>
+                        <td>₹1,20,000</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Musical instruments (tanpura, harmonium, etc.)</td>
+                        <td>₹40,000</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Makeup effects (aging, continuity)</td>
+                        <td>₹40,000</td>
+                    </tr>
+                    
+                    <tr>
+                        <td><strong>MUSIC & SOUND</strong></td>
+                        <td></td>
+                        <td><strong>₹3,00,000</strong></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Music director & composer (fusion track)</td>
+                        <td>₹1,00,000</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Live recording of Rabindra sangeet performances</td>
+                        <td>₹80,000</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Background score composition</td>
+                        <td>₹60,000</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Music rights & licensing</td>
+                        <td>₹60,000</td>
+                    </tr>
+                    
+                    <tr>
+                        <td><strong>POST-PRODUCTION</strong></td>
+                        <td></td>
+                        <td><strong>₹9,00,000</strong></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Editing (3-4 months)</td>
+                        <td>₹2,50,000</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Color grading (DaVinci Resolve)</td>
+                        <td>₹1,50,000</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Sound design & mixing</td>
+                        <td>₹2,00,000</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Music mixing & mastering</td>
+                        <td>₹1,50,000</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>VFX (minimal - period details, cleanup)</td>
+                        <td>₹80,000</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Titles & graphics</td>
+                        <td>₹70,000</td>
+                    </tr>
+                    
+                    <tr>
+                        <td><strong>MARKETING & DISTRIBUTION</strong></td>
+                        <td></td>
+                        <td><strong>₹2,50,000</strong></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Poster design & promotional materials</td>
+                        <td>₹60,000</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Trailer creation</td>
+                        <td>₹50,000</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Festival submissions (10-15 festivals)</td>
+                        <td>₹80,000</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Press kit & screening materials</td>
+                        <td>₹60,000</td>
+                    </tr>
+                    
+                    <tr>
+                        <td><strong>CONTINGENCY & INSURANCE</strong></td>
+                        <td></td>
+                        <td><strong>₹3,00,000</strong></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Production insurance</td>
+                        <td>₹1,20,000</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Contingency fund (6% of budget)</td>
+                        <td>₹1,80,000</td>
+                    </tr>
+                    
+                    <tr class="total-row">
+                        <td><strong>TOTAL BUDGET</strong></td>
+                        <td></td>
+                        <td><strong>₹50,00,000</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3 style="margin-top: 40px;">Budget Strategy & Cost Control</h3>
+            <ul>
+                <li><strong>Deferred payments:</strong> Key crew (director, editor, composer) receive partial payment upfront, remainder after distribution/festival awards</li>
+                <li><strong>Equipment:</strong> Negotiate package deals with rental houses; use contacts in film schools for reduced rates</li>
+                <li><strong>Locations:</strong> Mix of free locations (heritage buildings with cultural permits), paid locations (homes, studios), and controlled sets</li>
+                <li><strong>Cast:</strong> Focus on talented theater/regional cinema actors rather than big names; authenticity over star power</li>
+                <li><strong>Shooting schedule:</strong> Meticulous planning to avoid overtime; block shooting by location; minimize night shoots</li>
+                <li><strong>Post-production:</strong> Use local talent; negotiate fixed-price packages; editor doubles as assistant on other tasks</li>
+                <li><strong>Music:</strong> Rabindra sangeet is public domain; only one original fusion track needs composition</li>
+            </ul>
+        </div>
+
+        <!-- Target Audience & Distribution -->
+        <div class="slide" id="audience">
+            <h2>Target Audience & Distribution</h2>
+            
+            <h3>Primary Audience</h3>
+            <ul>
+                <li><strong>Demographics:</strong> Adults 25-65, higher education, urban/semi-urban</li>
+                <li><strong>Psychographics:</strong> Art house cinema lovers, music enthusiasts, cultural preservationists</li>
+                <li><strong>Geographic:</strong> West Bengal, Bengali diaspora worldwide, Indian art film circuit</li>
+            </ul>
+            
+            <h3>Secondary Audience</h3>
+            <ul>
+                <li>International festival audiences (Cannes, Berlin, Busan, etc.)</li>
+                <li>World cinema enthusiasts</li>
+                <li>Women-focused film circles</li>
+                <li>Classical music communities globally</li>
+            </ul>
+            
+            <h3>Distribution Strategy</h3>
+            <div class="theme-box">
+                <strong>Festival Circuit:</strong> Toronto, Busan, Berlin, Tribeca, Mumbai Film Festival, Kolkata International Film Festival
+            </div>
+            <div class="theme-box">
+                <strong>Theatrical:</strong> Limited release in major Indian cities, art house theaters in Bengali regions
+            </div>
+            <div class="theme-box">
+                <strong>Streaming:</strong> Netflix, MUBI, Amazon Prime Video (post-festival window)
+            </div>
+            <div class="theme-box">
+                <strong>Educational:</strong> Film schools, music conservatories, cultural institutions
+            </div>
+            
+            <h3>Revenue Projections (Conservative)</h3>
+            <ul>
+                <li>Festival awards & grants: ₹5-10 lakhs</li>
+                <li>Limited theatrical (if acquired): ₹10-15 lakhs</li>
+                <li>Streaming rights (12-18 months post-release): ₹25-40 lakhs</li>
+                <li>International sales: ₹5-10 lakhs</li>
+                <li><strong>Total projected recovery: ₹45-75 lakhs</strong></li>
+            </ul>
+        </div>
+
+        <!-- Comparable Films -->
+        <div class="slide" id="comparables">
+            <h2>Comparable Films</h2>
+            
+            <div class="character-card">
+                <div class="character-name">WHIPLASH (2014)</div>
+                <p>Similar theme of artistic obsession and the price of mastery. Made for $3.3 million, earned $49 million worldwide, won 3 Oscars.</p>
+                <p><strong>What we share:</strong> Intense mentor-student dynamic, music as central character, visceral performance sequences, emotional brutality</p>
+            </div>
+            
+            <div class="character-card">
+                <div class="character-name">A STAR IS BORN (2018)</div>
+                <p>Rise-and-fall music drama with tragic ending. Made for $36 million, earned $436 million, 8 Oscar nominations.</p>
+                <p><strong>What we share:</strong> Musical performances integral to story, addiction subplot, climactic death, legacy themes</p>
+            </div>
+            
+            <div class="character-card">
+                <div class="character-name">PIKU (2015)</div>
+                <p>Intimate Bengali family drama with Kolkata as character. Made for ₹30 crores, earned ₹143 crores, critical acclaim.</p>
+                <p><strong>What we share:</strong> Kolkata setting, father-child relationship, female protagonist, cultural specificity with universal themes</p>
+            </div>
+            
+            <div class="character-card">
+                <div class="character-name">MASAAN (2015)</div>
+                <p>Low-budget Indian arthouse success. Made for ₹3 crores, won Un Certain Regard at Cannes, launched careers.</p>
+                <p><strong>What we share:</strong> Realistic aesthetic, emotional depth, festival-friendly, authentic regional storytelling</p>
+            </div>
+            
+            <div class="character-card">
+                <div class="character-name">THE PIANIST (2002)</div>
+                <p>Survival through music drama. Made for $35 million, earned $120 million, won 3 Oscars including Best Actor.</p>
+                <p><strong>What we share:</strong> Music as salvation, one powerful performance, protagonist's journey through decades, redemptive ending</p>
+            </div>
+        </div>
+
+        <!-- Why This Film, Why Now -->
+        <div class="slide" id="whynow">
+            <h2>Why This Film, Why Now</h2>
+            
+            <h3>Cultural Urgency</h3>
+            <p>Traditional art forms like Rabindra sangeet face extinction in the streaming age. This film documents and celebrates this heritage before it's lost. Tagore's 163rd birth anniversary (2024) has renewed interest in his work globally.</p>
+            
+            <h3>Market Opportunity</h3>
+            <ul>
+                <li>Growing appetite for regional Indian cinema on global platforms (RRR, Kantara)</li>
+                <li>Streaming services actively seeking diverse cultural content</li>
+                <li>Bengali diaspora represents significant untapped audience</li>
+                <li>Female-driven dramas consistently perform at festivals</li>
+            </ul>
+            
+            <h3>Social Relevance</h3>
+            <ul>
+                <li><strong>Women's stories:</strong> Global demand for complex female protagonists beyond stereotypes</li>
+                <li><strong>Mental health:</strong> Honest portrayal of depression, addiction, recovery resonates today</li>
+                <li><strong>Work-life balance:</strong> The impossible demands on women to "have it all"</li>
+                <li><strong>Artistic integrity:</strong> In the age of viral content, a meditation on deep craft matters</li>
+            </ul>
+            
+            <h3>Artistic Distinction</h3>
+            <p>Unlike typical biopics, this is character-driven fiction that feels lived-in and real. The use of Tagore's actual songs provides authentic cultural texture. The 42-year span allows for genuine character evolution rarely seen in Indian cinema.</p>
+        </div>
+
+        <!-- Director's Vision -->
+        <div class="slide" id="vision">
+            <h2>Director's Vision Statement</h2>
+            
+            <p style="font-style: italic; font-size: 1.2em; margin-bottom: 30px;">"I want to make a film that feels like a long, beautiful song—one that starts with innocence, builds to heartbreak, and ends with transcendence."</p>
+            
+            <h3>Visual Language</h3>
+            <p>The film should feel intimate and observational, as if we're privileged witnesses to private moments. The camera should move like breath—sometimes still and contemplative, sometimes urgent and handheld. Each decade has its own visual texture:</p>
+            <ul>
+                <li><strong>1970s-80s:</strong> Warm, grainy, nostalgic—shot on vintage lenses, practical lighting</li>
+                <li><strong>1990s:</strong> Sharper, more clinical as Ananya's world hardens</li>
+                <li><strong>2000s-10s:</strong> Digital clarity, colder palette reflecting loss of soul</li>
+                <li><strong>Final concert:</strong> Transcendent, almost dreamlike—soft focus, ethereal lighting</li>
+            </ul>
+            
+            <h3>Performance Philosophy</h3>
+            <p>Actors must inhabit these characters, not perform them. The lead actress will undergo intensive Rabindra sangeet training. All singing will be performed live on set when possible. Authenticity over technical perfection.</p>
+            
+            <h3>Musical Integration</h3>
+            <p>Music is not background; it's the film's heartbeat. Every performance sequence will be shot with the reverence of a concert film. We'll capture the physical act of making music—fingers on tanpura strings, breath before a phrase, the concentration in the eyes.</p>
+            
+            <h3>Emotional Truth</h3>
+            <p>This isn't a tragedy or a triumph—it's both. Ananya makes terrible choices and beautiful art. She hurts people and creates beauty. The film refuses easy judgments. In the end, we ask: was it worth it? And leave the audience to decide.</p>
+        </div>
+
+        <!-- Call to Action -->
+        <div class="slide" style="background: linear-gradient(135deg, rgba(139, 69, 19, 0.2) 0%, rgba(255, 215, 0, 0.2) 100%);">
+            <h2 style="color: var(--gold); border: none; text-align: center;">Join Us in Telling This Story</h2>
+            
+            <p style="font-size: 1.2em; margin: 40px 0; text-align: center;">SWARALIPI is more than a film—it's a preservation of cultural heritage, a meditation on sacrifice, and a love letter to art itself.</p>
+            
+            <p style="font-size: 1.1em; margin: 30px 0; text-align: center;">This is a story that needs to be told now, before these traditions fade, before these voices are silenced.</p>
+            
+            <div style="margin-top: 50px; padding: 30px; background: rgba(255, 215, 0, 0.2); border-radius: 15px;">
+                <h3 style="color: var(--gold); margin-bottom: 20px; text-align: center;">What We're Seeking</h3>
+                <p style="text-align: center;"><strong>Investment:</strong> ₹50 lakhs production budget</p>
+                <p style="text-align: center;"><strong>Timeline:</strong> Pre-production 3 months, Principal photography 5-6 weeks, Post-production 4 months</p>
+                <p style="text-align: center;"><strong>Deliverables:</strong> Feature film (150-165 min), festival-ready, theatrical-ready, streaming-ready</p>
+                <p style="text-align: center;"><strong>Return:</strong> Revenue sharing from festivals, theatrical, streaming, international sales</p>
+            </div>
+            
+            <p style="font-size: 1.3em; margin-top: 50px; font-style: italic; color: var(--gold); text-align: center;">"Jodi tor dak shune keu na ashe tobe ekla chalo re"</p>
+            <p style="font-size: 1em; color: var(--teal); text-align: center;">"If no one responds to your call, then walk alone"</p>
+            <p style="font-size: 1em; margin-top: 30px; text-align: center;">Let's walk together.</p>
+        </div>
+
+        <!-- Contact Section -->
+        <div class="contact-section" id="contact">
+            <h2>Contact Us</h2>
+            <p class="classical-text" style="text-align: center;">We welcome potential investors, collaborators, and cultural partners to join us in bringing this important story to life.</p>
+            
+            <div class="contact-grid">
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <h3>Phone</h3>
+                    <p class="contact-detail">+91 98765 43210</p>
+                    <p class="contact-detail">+91 98765 43211</p>
+                </div>
+                
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <h3>Email</h3>
+                    <p class="contact-detail">info@swaralipifilm.com</p>
+                    <p class="contact-detail">producers@swaralipifilm.com</p>
+                </div>
+                
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <h3>Website</h3>
+                    <p class="contact-detail">www.swaralipifilm.com</p>
+                    <p class="contact-detail">www.swaralipi-production.com</p>
+                </div>
+                
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h3>Address</h3>
+                    <p class="contact-detail">Swaralipi Productions</p>
+                    <p class="contact-detail">Kolkata, West Bengal</p>
+                    <p class="contact-detail">India</p>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 3rem;">
+                <p class="classical-text">For investment inquiries, script requests, or collaboration opportunities, please contact us at the above details.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>SWARALIPI - The Musical Notation</p>
+        <p class="footer-quote">A Film About Art, Sacrifice, and the Price of Devotion</p>
+        <p style="margin-top: 1.5rem;">© 2023 Swaralipi Productions. All rights reserved.</p>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <div class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <script>
+        // Mobile hamburger menu toggle
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            hamburger.innerHTML = navLinks.classList.contains('active') 
+                ? '<i class="fas fa-times"></i>' 
+                : '<i class="fas fa-bars"></i>';
+        });
+        
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                hamburger.innerHTML = '<i class="fas fa-bars"></i>';
+            });
+        });
+        
+        // Back to top button
+        const backToTop = document.getElementById('backToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+        
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Add active class to current section in navigation
+        window.addEventListener('scroll', () => {
+            let current = '';
+            const sections = document.querySelectorAll('.slide, .contact-section, .hero-section');
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= (sectionTop - 150)) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Create additional music notes dynamically for better visual effect
+        document.addEventListener('DOMContentLoaded', function() {
+            const musicNotesContainer = document.querySelector('.music-notes');
+            const notes = ['♪', '♫', '♬', '𝄞', '𝄢', '♩'];
+            
+            for (let i = 0; i < 12; i++) {
+                const note = document.createElement('div');
+                note.className = 'music-note';
+                note.textContent = notes[Math.floor(Math.random() * notes.length)];
+                
+                // Random position
+                const left = Math.random() * 90 + 5;
+                const top = Math.random() * 90 + 5;
+                const delay = Math.random() * 10;
+                const duration = 15 + Math.random() * 10;
+                
+                note.style.left = `${left}%`;
+                note.style.top = `${top}%`;
+                note.style.animation = `floatNote ${duration}s infinite linear ${delay}s`;
+                note.style.fontSize = `${1 + Math.random() * 2}rem`;
+                note.style.opacity = `${0.2 + Math.random() * 0.3}`;
+                
+                musicNotesContainer.appendChild(note);
+            }
+        });
+    </script>
+</body>
+</html>
