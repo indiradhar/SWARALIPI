@@ -177,7 +177,7 @@
             background-color: var(--dark-bg);
         }
 
-        /* Music notation animation */
+        /* Music notation animation - Improved visibility */
         .music-notes {
             position: absolute;
             width: 100%;
@@ -188,9 +188,10 @@
 
         .music-note {
             position: absolute;
-            font-size: 2rem;
-            color: rgba(255, 215, 0, 0.3);
+            font-size: 2.5rem;
+            color: rgba(255, 215, 0, 0.7); /* Brighter gold for better visibility */
             opacity: 0;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
         }
 
         .note-1 { top: 10%; left: 5%; animation: floatNote 15s infinite linear; }
@@ -202,8 +203,8 @@
 
         @keyframes floatNote {
             0% { transform: translateY(100px) rotate(0deg); opacity: 0; }
-            10% { opacity: 0.5; }
-            90% { opacity: 0.5; }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.8; }
             100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
         }
 
@@ -344,7 +345,7 @@
             border-top: 3px solid var(--pink);
         }
 
-        /* Key Visuals Grid */
+        /* Key Visuals Grid with Image Source */
         .key-visuals-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -381,20 +382,35 @@
             justify-content: center;
         }
 
-        .visual-placeholder {
-            background-color: rgba(0, 0, 0, 0.3);
-            border: 2px dashed var(--gold);
-            border-radius: 10px;
-            padding: 3rem;
-            text-align: center;
+        .visual-image-container {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            border-radius: 8px;
             margin: 1rem 0;
-            color: var(--pink);
-            font-style: italic;
-            flex-grow: 1;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            background-color: rgba(0, 0, 0, 0.5);
             display: flex;
             align-items: center;
             justify-content: center;
-            min-height: 200px;
+        }
+
+        .visual-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .visual-card:hover .visual-image {
+            transform: scale(1.05);
+        }
+
+        .image-placeholder {
+            color: var(--pink);
+            font-style: italic;
+            padding: 2rem;
+            text-align: center;
         }
 
         .visual-description {
@@ -462,6 +478,47 @@
             font-size: 1.2rem;
             background-color: rgba(255, 215, 0, 0.15);
             color: var(--gold);
+        }
+
+        /* Director's Bio Section */
+        .director-bio-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3rem;
+            margin-top: 2rem;
+            align-items: flex-start;
+        }
+
+        .director-image-container {
+            flex: 0 0 250px;
+        }
+
+        .director-image {
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid var(--gold);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .director-info {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .director-name {
+            color: var(--gold);
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            border-bottom: none;
+        }
+
+        .director-subtitle {
+            color: var(--teal);
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            font-style: italic;
         }
 
         /* Contact Section */
@@ -603,6 +660,21 @@
             .budget-table td {
                 padding: 0.6rem 0.8rem;
             }
+
+            .director-bio-container {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .director-image-container {
+                flex: 0 0 auto;
+            }
+
+            .director-image {
+                width: 200px;
+                height: 200px;
+            }
         }
 
         @media (max-width: 576px) {
@@ -700,15 +772,11 @@
             <li><a href="#synopsis">Synopsis</a></li>
             <li><a href="#characters">Characters</a></li>
             <li><a href="#timeline">Timeline</a></li>
-            <li><a href="#themes">Themes</a></li>
-            <li><a href="#locations">Locations</a></li>
             <li><a href="#visuals">Visuals</a></li>
             <li><a href="#production">Production</a></li>
-            <li><a href="#budget">Budget</a></li>
             <li><a href="#audience">Audience</a></li>
-            <li><a href="#comparables">Comparables</a></li>
             <li><a href="#whynow">Why Now</a></li>
-            <li><a href="#vision">Director's Vision</a></li>
+            <li><a href="#director">Director</a></li>
             <li><a href="#contact">Contact</a></li>
         </ul>
         <div class="hamburger" id="hamburger">
@@ -875,8 +943,8 @@
             </div>
         </div>
 
-        <!-- Themes Section -->
-        <div class="slide" id="themes">
+        <!-- Themes Section (Still needed for content even if not in navigation) -->
+        <div class="slide">
             <h2>Core Themes</h2>
             
             <div class="theme-box">
@@ -905,8 +973,8 @@
             </div>
         </div>
 
-        <!-- Locations Section -->
-        <div class="slide" id="locations">
+        <!-- Locations Section (Still needed for content even if not in navigation) -->
+        <div class="slide">
             <h2>Primary Locations</h2>
             
             <div class="location-grid">
@@ -956,104 +1024,137 @@
                     </ul>
                 </div>
             </div>
-            
-            <h3 style="margin-top: 40px;">Location Strategy for Budget</h3>
-            <p>To maximize production value within ₹50 lakhs budget:</p>
-            <ul>
-                <li><strong>Kolkata locations:</strong> Use actual heritage buildings, homes (with permissions), real Rabindra Sadan for exterior shots</li>
-                <li><strong>Mumbai sequences:</strong> Minimize, use controlled interior sets, stock footage for establishing shots</li>
-                <li><strong>Performance venues:</strong> Use theater spaces during off-hours, negotiate multi-day access</li>
-                <li><strong>Time periods:</strong> Suggest era through costume, props, color grading rather than expensive set dressing</li>
-            </ul>
         </div>
 
-        <!-- Key Visuals Section (All 14 Moments) -->
+        <!-- Key Visuals Section (All 14 Moments with Image Source) -->
         <div class="slide" id="visuals">
             <h2>Key Visual Moments</h2>
-            <p style="font-style: italic; color: var(--pink); margin-bottom: 30px;">These are the defining images that will stay with audiences long after the film ends. [Placeholder sections for concept art/stills]</p>
+            <p style="font-style: italic; color: var(--pink); margin-bottom: 30px;">These are the defining images that will stay with audiences long after the film ends.</p>
             
             <div class="key-visuals-grid">
                 <div class="visual-card">
                     <div class="visual-title">1. Young Ananya Discovers Music</div>
-                    <div class="visual-placeholder">[Image Placeholder: 10-year-old girl in courtyard, radio glowing, Durga Puja lights in background]</div>
-                    <p class="visual-description">The innocence of pure love for art. Warm, nostalgic 1970s color palette.</p>
+                    <div class="visual-image-container">
+                        <!-- Replace this src with your image URL -->
+                        <img src="https://i.postimg.cc/j5P446yX/Gemini-Generated-Image-ts4qltts4qltts4q.png" alt="Young Ananya Discovers Music" class="visual-image">
+                    </div>
+                    <p class="visual-description">The innocence of pure love for art.</p>
                 </div>
                 
                 <div class="visual-card">
                     <div class="visual-title">2. Training with Malabika</div>
-                    <div class="visual-placeholder">[Image Placeholder: Guru and student in dawn riyaaz session, tanpura between them]</div>
-                    <p class="visual-description">The sacred teacher-student bond. Soft morning light through window.</p>
+                    <div class="visual-image-container">
+                        <!-- Replace this src with your image URL -->
+                        <img src="https://i.postimg.cc/90cZP6md/Gemini-Generated-Image-rpry6arpry6arpry.png" alt="Training with Malabika" class="visual-image">
+                    </div>
+                    <p class="visual-description">The sacred teacher-student bond.</p>
                 </div>
                 
                 <div class="visual-card">
                     <div class="visual-title">3. The Wedding</div>
-                    <div class="visual-placeholder">[Image Placeholder: Ananya in red Bengali bridal sari, carrying tanpura, Vikram in frame]</div>
-                    <p class="visual-description">Hope and foreboding. Traditional meets modern.</p>
+                    <div class="visual-image-container">
+                        <!-- Replace this src with your image URL -->
+                        <img src="https://i.postimg.cc/9QDTBth6/Gemini-Generated-Image-wj2yrxwj2yrxwj2y.png" alt="The Wedding" class="visual-image">
+                    </div>
+                    <p class="visual-description">Hope and foreboding.</p>
                 </div>
                 
                 <div class="visual-card">
                     <div class="visual-title">4. Award Night / Discovery</div>
-                    <div class="visual-placeholder">[Image Placeholder: Split frame—Ananya holding award / Vikram kissing Rhea]</div>
-                    <p class="visual-description">The moment everything shatters. Dramatic lighting contrast.</p>
+                    <div class="visual-image-container">
+                        <!-- Replace this src with your image URL -->
+                        <img src="https://i.postimg.cc/pXTn2Ypy/Gemini-Generated-Image-n0kqdcn0kqdcn0kq.png" alt="Award Night / Discovery" class="visual-image">
+                    </div>
+                    <p class="visual-description">The moment everything shatters.</p>
                 </div>
                 
                 <div class="visual-card">
                     <div class="visual-title">5. The Descent</div>
-                    <div class="visual-placeholder">[Image Placeholder: Ananya alone with whiskey bottle, tanpura gathering dust in background]</div>
-                    <p class="visual-description">Addiction and loss. Dark, cold color palette.</p>
+                    <div class="visual-image-container">
+                        <!-- Replace this src with your image URL -->
+                        <img src="https://i.postimg.cc/Bbvtn4QG/Gemini-Generated-Image-wn11pzwn11pzwn11.png" alt="The Descent" class="visual-image">
+                    </div>
+                    <p class="visual-description">Addiction and loss.</p>
                 </div>
                 
                 <div class="visual-card">
                     <div class="visual-title">6. Malabika's Funeral</div>
-                    <div class="visual-placeholder">[Image Placeholder: Ananya weeping at guru's feet, white mourning clothes]</div>
-                    <p class="visual-description">Loss of spiritual anchor. Rain, grief, helplessness.</p>
+                    <div class="visual-image-container">
+                        <!-- Replace this src with your image URL -->
+                        <img src="https://i.postimg.cc/3R8xtYGR/Gemini-Generated-Image-jj3m5xjj3m5xjj3m.png" alt="Malabika's Funeral" class="visual-image">
+                    </div>
+                    <p class="visual-description">Loss of spiritual anchor.</p>
                 </div>
                 
                 <div class="visual-card">
                     <div class="visual-title">7. The Empty Home</div>
-                    <div class="visual-placeholder">[Image Placeholder: Ananya in childhood bedroom, now aged and broken, listening to old recordings]</div>
+                    <div class="visual-image-container">
+                        <!-- Replace this src with your image URL -->
+                        <img src="https://i.postimg.cc/c4p1VQYG/Gemini-Generated-Image-g129gng129gng129.png" alt="The Empty Home" class="visual-image">
+                    </div>
                     <p class="visual-description">Rock bottom. Stillness, decay, loneliness.</p>
                 </div>
                 
                 <div class="visual-card">
                     <div class="visual-title">8. Fusion Recording Session</div>
-                    <div class="visual-placeholder">[Image Placeholder: Ananya in modern studio, electronic equipment, conflicted expression]</div>
-                    <p class="visual-description">The compromise. Cold digital aesthetic vs. warm tradition.</p>
+                    <div class="visual-image-container">
+                        <!-- Replace this src with your image URL -->
+                        <img src="https://i.postimg.cc/xd0Q2g13/Gemini-Generated-Image-xl4w6gxl4w6gxl4w.png" alt="Fusion Recording Session" class="visual-image">
+                    </div>
+                    <p class="visual-description">The compromise. Sell out of soul and tradition.</p>
                 </div>
                 
                 <div class="visual-card">
                     <div class="visual-title">9. Reconciliation with Son</div>
-                    <div class="visual-placeholder">[Image Placeholder: Ananya and adult Arijit sharing chai, healing beginning]</div>
-                    <p class="visual-description">Forgiveness and understanding. Warm domestic intimacy.</p>
+                    <div class="visual-image-container">
+                        <!-- Replace this src with your image URL -->
+                        <img src="https://i.postimg.cc/52m0LXHm/Gemini-Generated-Image-ogdv4bogdv4bogdv.png" alt="Reconciliation with Son" class="visual-image">
+                    </div>
+                    <p class="visual-description">Forgiveness and understanding.</p>
                 </div>
                 
                 <div class="visual-card">
                     <div class="visual-title">10. Preparing for Final Concert</div>
-                    <div class="visual-placeholder">[Image Placeholder: Ananya in white sari, tuning tanpura, knowing this is goodbye]</div>
+                    <div class="visual-image-container">
+                        <!-- Replace this src with your image URL -->
+                        <img src="https://via.placeholder.com/400x300/F5F5DC/0a0a1a?text=Image+10" alt="Preparing for Final Concert" class="visual-image">
+                    </div>
                     <p class="visual-description">Peaceful acceptance. Ethereal, almost transcendent quality.</p>
                 </div>
                 
                 <div class="visual-card">
                     <div class="visual-title">11. The Final Performance</div>
-                    <div class="visual-placeholder">[Image Placeholder: Ananya on stage, spotlight, arms spread, eyes closed in ecstasy]</div>
+                    <div class="visual-image-container">
+                        <!-- Replace this src with your image URL -->
+                        <img src="https://via.placeholder.com/400x300/FFD700/0a0a1a?text=Image+11" alt="The Final Performance" class="visual-image">
+                    </div>
                     <p class="visual-description">The moment of redemption. Radiant, beautiful, tragic.</p>
                 </div>
                 
                 <div class="visual-card">
                     <div class="visual-title">12. The Collapse</div>
-                    <div class="visual-placeholder">[Image Placeholder: Ananya collapsing, Arijit rushing to stage, audience frozen]</div>
+                    <div class="visual-image-container">
+                        <!-- Replace this src with your image URL -->
+                        <img src="https://via.placeholder.com/400x300/20B2AA/0a0a1a?text=Image+12" alt="The Collapse" class="visual-image">
+                    </div>
                     <p class="visual-description">The ultimate sacrifice. Time suspended, heartbreaking.</p>
                 </div>
                 
                 <div class="visual-card">
                     <div class="visual-title">13. Death in Son's Arms</div>
-                    <div class="visual-placeholder">[Image Placeholder: Arijit holding dying Ananya, her hand reaching to touch his face]</div>
+                    <div class="visual-image-container">
+                        <!-- Replace this src with your image URL -->
+                        <img src="https://via.placeholder.com/400x300/FFB6C1/0a0a1a?text=Image+13" alt="Death in Son's Arms" class="visual-image">
+                    </div>
                     <p class="visual-description">Love and loss. Intimate, devastating, beautiful.</p>
                 </div>
                 
                 <div class="visual-card">
                     <div class="visual-title">14. The Legacy</div>
-                    <div class="visual-placeholder">[Image Placeholder: Young girl watching Ananya's performance on laptop, mirroring opening]</div>
+                    <div class="visual-image-container">
+                        <!-- Replace this src with your image URL -->
+                        <img src="https://via.placeholder.com/400x300/8B4513/0a0a1a?text=Image+14" alt="The Legacy" class="visual-image">
+                    </div>
                     <p class="visual-description">The cycle continues. Hope, immortality through art.</p>
                 </div>
             </div>
@@ -1094,7 +1195,7 @@
         </div>
 
         <!-- Detailed Budget Breakdown -->
-        <div class="slide" id="budget">
+        <div class="slide">
             <h2>Detailed Budget Breakdown</h2>
             <p style="color: var(--pink); margin-bottom: 30px;">Maximum Budget: ₹50,00,000 (₹50 Lakhs)</p>
             
@@ -1399,17 +1500,6 @@
                     </tr>
                 </tbody>
             </table>
-            
-            <h3 style="margin-top: 40px;">Budget Strategy & Cost Control</h3>
-            <ul>
-                <li><strong>Deferred payments:</strong> Key crew (director, editor, composer) receive partial payment upfront, remainder after distribution/festival awards</li>
-                <li><strong>Equipment:</strong> Negotiate package deals with rental houses; use contacts in film schools for reduced rates</li>
-                <li><strong>Locations:</strong> Mix of free locations (heritage buildings with cultural permits), paid locations (homes, studios), and controlled sets</li>
-                <li><strong>Cast:</strong> Focus on talented theater/regional cinema actors rather than big names; authenticity over star power</li>
-                <li><strong>Shooting schedule:</strong> Meticulous planning to avoid overtime; block shooting by location; minimize night shoots</li>
-                <li><strong>Post-production:</strong> Use local talent; negotiate fixed-price packages; editor doubles as assistant on other tasks</li>
-                <li><strong>Music:</strong> Rabindra sangeet is public domain; only one original fusion track needs composition</li>
-            </ul>
         </div>
 
         <!-- Target Audience & Distribution -->
@@ -1455,41 +1545,6 @@
             </ul>
         </div>
 
-        <!-- Comparable Films -->
-        <div class="slide" id="comparables">
-            <h2>Comparable Films</h2>
-            
-            <div class="character-card">
-                <div class="character-name">WHIPLASH (2014)</div>
-                <p>Similar theme of artistic obsession and the price of mastery. Made for $3.3 million, earned $49 million worldwide, won 3 Oscars.</p>
-                <p><strong>What we share:</strong> Intense mentor-student dynamic, music as central character, visceral performance sequences, emotional brutality</p>
-            </div>
-            
-            <div class="character-card">
-                <div class="character-name">A STAR IS BORN (2018)</div>
-                <p>Rise-and-fall music drama with tragic ending. Made for $36 million, earned $436 million, 8 Oscar nominations.</p>
-                <p><strong>What we share:</strong> Musical performances integral to story, addiction subplot, climactic death, legacy themes</p>
-            </div>
-            
-            <div class="character-card">
-                <div class="character-name">PIKU (2015)</div>
-                <p>Intimate Bengali family drama with Kolkata as character. Made for ₹30 crores, earned ₹143 crores, critical acclaim.</p>
-                <p><strong>What we share:</strong> Kolkata setting, father-child relationship, female protagonist, cultural specificity with universal themes</p>
-            </div>
-            
-            <div class="character-card">
-                <div class="character-name">MASAAN (2015)</div>
-                <p>Low-budget Indian arthouse success. Made for ₹3 crores, won Un Certain Regard at Cannes, launched careers.</p>
-                <p><strong>What we share:</strong> Realistic aesthetic, emotional depth, festival-friendly, authentic regional storytelling</p>
-            </div>
-            
-            <div class="character-card">
-                <div class="character-name">THE PIANIST (2002)</div>
-                <p>Survival through music drama. Made for $35 million, earned $120 million, won 3 Oscars including Best Actor.</p>
-                <p><strong>What we share:</strong> Music as salvation, one powerful performance, protagonist's journey through decades, redemptive ending</p>
-            </div>
-        </div>
-
         <!-- Why This Film, Why Now -->
         <div class="slide" id="whynow">
             <h2>Why This Film, Why Now</h2>
@@ -1517,29 +1572,27 @@
             <p>Unlike typical biopics, this is character-driven fiction that feels lived-in and real. The use of Tagore's actual songs provides authentic cultural texture. The 42-year span allows for genuine character evolution rarely seen in Indian cinema.</p>
         </div>
 
-        <!-- Director's Vision -->
-        <div class="slide" id="vision">
-            <h2>Director's Vision Statement</h2>
+        <!-- Director's Bio Section -->
+        <div class="slide" id="director">
+            <h2>Director's Bio</h2>
             
-            <p style="font-style: italic; font-size: 1.2em; margin-bottom: 30px;">"I want to make a film that feels like a long, beautiful song—one that starts with innocence, builds to heartbreak, and ends with transcendence."</p>
-            
-            <h3>Visual Language</h3>
-            <p>The film should feel intimate and observational, as if we're privileged witnesses to private moments. The camera should move like breath—sometimes still and contemplative, sometimes urgent and handheld. Each decade has its own visual texture:</p>
-            <ul>
-                <li><strong>1970s-80s:</strong> Warm, grainy, nostalgic—shot on vintage lenses, practical lighting</li>
-                <li><strong>1990s:</strong> Sharper, more clinical as Ananya's world hardens</li>
-                <li><strong>2000s-10s:</strong> Digital clarity, colder palette reflecting loss of soul</li>
-                <li><strong>Final concert:</strong> Transcendent, almost dreamlike—soft focus, ethereal lighting</li>
-            </ul>
-            
-            <h3>Performance Philosophy</h3>
-            <p>Actors must inhabit these characters, not perform them. The lead actress will undergo intensive Rabindra sangeet training. All singing will be performed live on set when possible. Authenticity over technical perfection.</p>
-            
-            <h3>Musical Integration</h3>
-            <p>Music is not background; it's the film's heartbeat. Every performance sequence will be shot with the reverence of a concert film. We'll capture the physical act of making music—fingers on tanpura strings, breath before a phrase, the concentration in the eyes.</p>
-            
-            <h3>Emotional Truth</h3>
-            <p>This isn't a tragedy or a triumph—it's both. Ananya makes terrible choices and beautiful art. She hurts people and creates beauty. The film refuses easy judgments. In the end, we ask: was it worth it? And leave the audience to decide.</p>
+            <div class="director-bio-container">
+                <div class="director-image-container">
+                    <!-- Replace this src with your director's image URL -->
+                    <img src="https://i.postimg.cc/PqRdQYdR/DIRECTOR-INDIRA-MUKHERJEE.jpg" alt="Indira Dhar" class="director-image">
+                </div>
+                
+                <div class="director-info">
+                    <h3 class="director-name">Indira Dhar</h3>
+                    <p class="director-subtitle">Award-Winning Filmmaker</p>
+                    
+                    <p>Indira Dhar has swiftly become a compelling voice in Indian cinema, blending emotional depth with global appeal. Her debut Bengali feature <em>Putul</em> (2024), about the lives of street children, premiered to a standing ovation at Cannes Film Festival and was considered for the 97th Academy Awards in three categories. It had a special screening at IFFI Goa, 2025.</p>
+                    
+                    <p>In 2025, she ventured into Hindi cinema with <em>Echoes of Valour</em>, a poignant biopic starring Divya Dutta and Neeraj Kabi, which was unveiled at Cannes, had a closed-door screening at Venice, and is now touring the international festival circuit.</p>
+                    
+                    <p>With <em>Swaralipi</em>, Dhar returns to her Bengali roots while exploring universal themes of artistic devotion, sacrifice, and the eternal struggle between tradition and modernity.</p>
+                </div>
+            </div>
         </div>
 
         <!-- Call to Action -->
@@ -1721,8 +1774,9 @@
                 note.style.left = `${left}%`;
                 note.style.top = `${top}%`;
                 note.style.animation = `floatNote ${duration}s infinite linear ${delay}s`;
-                note.style.fontSize = `${1 + Math.random() * 2}rem`;
-                note.style.opacity = `${0.2 + Math.random() * 0.3}`;
+                note.style.fontSize = `${2 + Math.random() * 1.5}rem`;
+                note.style.opacity = `${0.6 + Math.random() * 0.3}`;
+                note.style.color = `rgba(255, 215, 0, ${0.7 + Math.random() * 0.3})`;
                 
                 musicNotesContainer.appendChild(note);
             }
