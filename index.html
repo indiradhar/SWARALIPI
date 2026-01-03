@@ -83,7 +83,7 @@
             font-size: 1.2rem;
         }
 
-        /* Navigation */
+        /* Navigation - Fixed Hamburger Menu */
         .navbar {
             position: fixed;
             top: 0;
@@ -104,6 +104,7 @@
             color: var(--gold);
             font-weight: 700;
             text-decoration: none;
+            flex-shrink: 0;
         }
 
         .nav-links {
@@ -123,6 +124,7 @@
             transition: color 0.3s ease;
             padding: 0.5rem 0;
             position: relative;
+            white-space: nowrap;
         }
 
         .nav-links a:hover {
@@ -149,6 +151,11 @@
             cursor: pointer;
             font-size: 1.8rem;
             color: var(--beige);
+            background: none;
+            border: none;
+            padding: 0;
+            margin: 0;
+            z-index: 1001;
         }
 
         /* Hero Section with Music Aesthetic */
@@ -264,6 +271,7 @@
             border: 1px solid rgba(255, 215, 0, 0.1);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            overflow: hidden; /* Prevent content from overflowing */
         }
 
         .slide:hover {
@@ -406,13 +414,6 @@
             transform: scale(1.05);
         }
 
-        .image-placeholder {
-            color: var(--pink);
-            font-style: italic;
-            padding: 2rem;
-            text-align: center;
-        }
-
         .visual-description {
             color: var(--beige);
             font-size: 0.95rem;
@@ -447,12 +448,19 @@
             margin-top: 0.5rem;
         }
 
-        /* Budget Table */
-        .budget-table {
+        /* Budget Table with Horizontal Scroll on Mobile */
+        .budget-container {
             width: 100%;
             margin-top: 2rem;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .budget-table {
+            width: 100%;
             border-collapse: collapse;
             font-size: 0.95rem;
+            min-width: 800px; /* Minimum width to ensure content fits */
         }
 
         .budget-table th {
@@ -461,6 +469,7 @@
             text-align: left;
             color: var(--gold);
             font-size: 1.1rem;
+            white-space: nowrap;
         }
 
         .budget-table td {
@@ -606,7 +615,7 @@
 
         @media (max-width: 768px) {
             .navbar {
-                padding: 1rem;
+                padding: 1rem 1.5rem;
             }
 
             .nav-links {
@@ -614,14 +623,17 @@
                 top: 70px;
                 left: 0;
                 width: 100%;
+                height: calc(100vh - 70px);
                 background-color: rgba(10, 10, 26, 0.98);
                 backdrop-filter: blur(10px);
                 flex-direction: column;
                 align-items: center;
+                justify-content: flex-start;
                 padding: 2rem 0;
                 clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
                 transition: clip-path 0.5s ease;
                 z-index: 999;
+                overflow-y: auto;
             }
 
             .nav-links.active {
@@ -629,15 +641,26 @@
             }
 
             .nav-links li {
-                margin: 1rem 0;
+                margin: 0.8rem 0;
+                width: 100%;
+                text-align: center;
+            }
+
+            .nav-links a {
+                display: block;
+                padding: 0.8rem 1rem;
+                font-size: 1.2rem;
             }
 
             .hamburger {
                 display: block;
+                position: relative;
+                right: 0;
             }
 
             .hero-content {
                 padding: 2rem;
+                margin: 0 1rem;
             }
 
             h1 {
@@ -654,6 +677,7 @@
 
             .budget-table {
                 font-size: 0.85rem;
+                min-width: 700px;
             }
 
             .budget-table th,
@@ -678,12 +702,17 @@
         }
 
         @media (max-width: 576px) {
+            .navbar {
+                padding: 1rem;
+            }
+
             .container {
                 padding: 1rem;
             }
 
             .slide {
-                padding: 1.8rem;
+                padding: 1.5rem;
+                margin-bottom: 2rem;
             }
 
             h1 {
@@ -694,13 +723,17 @@
                 font-size: 1.8rem;
             }
 
+            h3 {
+                font-size: 1.5rem;
+            }
+
             .logline {
                 font-size: 1.1rem;
                 padding: 1.5rem;
             }
 
             .contact-section {
-                padding: 2rem;
+                padding: 2rem 1.5rem;
             }
 
             .key-visuals-grid {
@@ -709,6 +742,56 @@
 
             .visual-title {
                 min-height: auto;
+                font-size: 1.1rem;
+            }
+
+            .hero-content {
+                padding: 1.5rem;
+            }
+
+            .hero-content h1 {
+                font-size: 2.2rem;
+            }
+
+            .tagline {
+                font-size: 1.3rem;
+            }
+
+            .budget-table {
+                min-width: 600px;
+                font-size: 0.8rem;
+            }
+
+            .budget-table th,
+            .budget-table td {
+                padding: 0.5rem 0.6rem;
+            }
+
+            .director-image {
+                width: 180px;
+                height: 180px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .hero-content h1 {
+                font-size: 1.8rem;
+            }
+
+            .tagline {
+                font-size: 1.1rem;
+            }
+
+            .hero-details {
+                font-size: 0.95rem;
+            }
+
+            .slide {
+                padding: 1.2rem;
+            }
+
+            .contact-card {
+                padding: 1.5rem;
             }
         }
 
@@ -779,9 +862,9 @@
             <li><a href="#director">Director</a></li>
             <li><a href="#contact">Contact</a></li>
         </ul>
-        <div class="hamburger" id="hamburger">
+        <button class="hamburger" id="hamburger" aria-label="Menu">
             <i class="fas fa-bars"></i>
-        </div>
+        </button>
     </nav>
 
     <!-- Hero Section -->
@@ -943,7 +1026,7 @@
             </div>
         </div>
 
-        <!-- Themes Section (Still needed for content even if not in navigation) -->
+        <!-- Themes Section -->
         <div class="slide">
             <h2>Core Themes</h2>
             
@@ -973,7 +1056,7 @@
             </div>
         </div>
 
-        <!-- Locations Section (Still needed for content even if not in navigation) -->
+        <!-- Locations Section -->
         <div class="slide">
             <h2>Primary Locations</h2>
             
@@ -1026,7 +1109,7 @@
             </div>
         </div>
 
-        <!-- Key Visuals Section (All 14 Moments with Image Source) -->
+        <!-- Key Visuals Section -->
         <div class="slide" id="visuals">
             <h2>Key Visual Moments</h2>
             <p style="font-style: italic; color: var(--pink); margin-bottom: 30px;">These are the defining images that will stay with audiences long after the film ends.</p>
@@ -1035,7 +1118,6 @@
                 <div class="visual-card">
                     <div class="visual-title">1. Young Ananya Discovers Music</div>
                     <div class="visual-image-container">
-                        <!-- Replace this src with your image URL -->
                         <img src="https://i.postimg.cc/j5P446yX/Gemini-Generated-Image-ts4qltts4qltts4q.png" alt="Young Ananya Discovers Music" class="visual-image">
                     </div>
                     <p class="visual-description">The innocence of pure love for art.</p>
@@ -1044,7 +1126,6 @@
                 <div class="visual-card">
                     <div class="visual-title">2. Training with Malabika</div>
                     <div class="visual-image-container">
-                        <!-- Replace this src with your image URL -->
                         <img src="https://i.postimg.cc/90cZP6md/Gemini-Generated-Image-rpry6arpry6arpry.png" alt="Training with Malabika" class="visual-image">
                     </div>
                     <p class="visual-description">The sacred teacher-student bond.</p>
@@ -1053,7 +1134,6 @@
                 <div class="visual-card">
                     <div class="visual-title">3. The Wedding</div>
                     <div class="visual-image-container">
-                        <!-- Replace this src with your image URL -->
                         <img src="https://i.postimg.cc/9QDTBth6/Gemini-Generated-Image-wj2yrxwj2yrxwj2y.png" alt="The Wedding" class="visual-image">
                     </div>
                     <p class="visual-description">Hope and foreboding.</p>
@@ -1062,7 +1142,6 @@
                 <div class="visual-card">
                     <div class="visual-title">4. Award Night / Discovery</div>
                     <div class="visual-image-container">
-                        <!-- Replace this src with your image URL -->
                         <img src="https://i.postimg.cc/pXTn2Ypy/Gemini-Generated-Image-n0kqdcn0kqdcn0kq.png" alt="Award Night / Discovery" class="visual-image">
                     </div>
                     <p class="visual-description">The moment everything shatters.</p>
@@ -1071,7 +1150,6 @@
                 <div class="visual-card">
                     <div class="visual-title">5. The Descent</div>
                     <div class="visual-image-container">
-                        <!-- Replace this src with your image URL -->
                         <img src="https://i.postimg.cc/Bbvtn4QG/Gemini-Generated-Image-wn11pzwn11pzwn11.png" alt="The Descent" class="visual-image">
                     </div>
                     <p class="visual-description">Addiction and loss.</p>
@@ -1080,7 +1158,6 @@
                 <div class="visual-card">
                     <div class="visual-title">6. Malabika's Funeral</div>
                     <div class="visual-image-container">
-                        <!-- Replace this src with your image URL -->
                         <img src="https://i.postimg.cc/3R8xtYGR/Gemini-Generated-Image-jj3m5xjj3m5xjj3m.png" alt="Malabika's Funeral" class="visual-image">
                     </div>
                     <p class="visual-description">Loss of spiritual anchor.</p>
@@ -1089,7 +1166,6 @@
                 <div class="visual-card">
                     <div class="visual-title">7. The Empty Home</div>
                     <div class="visual-image-container">
-                        <!-- Replace this src with your image URL -->
                         <img src="https://i.postimg.cc/c4p1VQYG/Gemini-Generated-Image-g129gng129gng129.png" alt="The Empty Home" class="visual-image">
                     </div>
                     <p class="visual-description">Rock bottom. Stillness, decay, loneliness.</p>
@@ -1098,7 +1174,6 @@
                 <div class="visual-card">
                     <div class="visual-title">8. Fusion Recording Session</div>
                     <div class="visual-image-container">
-                        <!-- Replace this src with your image URL -->
                         <img src="https://i.postimg.cc/xd0Q2g13/Gemini-Generated-Image-xl4w6gxl4w6gxl4w.png" alt="Fusion Recording Session" class="visual-image">
                     </div>
                     <p class="visual-description">The compromise. Sell out of soul and tradition.</p>
@@ -1107,7 +1182,6 @@
                 <div class="visual-card">
                     <div class="visual-title">9. Reconciliation with Son</div>
                     <div class="visual-image-container">
-                        <!-- Replace this src with your image URL -->
                         <img src="https://i.postimg.cc/52m0LXHm/Gemini-Generated-Image-ogdv4bogdv4bogdv.png" alt="Reconciliation with Son" class="visual-image">
                     </div>
                     <p class="visual-description">Forgiveness and understanding.</p>
@@ -1116,7 +1190,6 @@
                 <div class="visual-card">
                     <div class="visual-title">10. Preparing for Final Concert</div>
                     <div class="visual-image-container">
-                        <!-- Replace this src with your image URL -->
                         <img src="https://via.placeholder.com/400x300/F5F5DC/0a0a1a?text=Image+10" alt="Preparing for Final Concert" class="visual-image">
                     </div>
                     <p class="visual-description">Peaceful acceptance. Ethereal, almost transcendent quality.</p>
@@ -1125,7 +1198,6 @@
                 <div class="visual-card">
                     <div class="visual-title">11. The Final Performance</div>
                     <div class="visual-image-container">
-                        <!-- Replace this src with your image URL -->
                         <img src="https://via.placeholder.com/400x300/FFD700/0a0a1a?text=Image+11" alt="The Final Performance" class="visual-image">
                     </div>
                     <p class="visual-description">The moment of redemption. Radiant, beautiful, tragic.</p>
@@ -1134,7 +1206,6 @@
                 <div class="visual-card">
                     <div class="visual-title">12. The Collapse</div>
                     <div class="visual-image-container">
-                        <!-- Replace this src with your image URL -->
                         <img src="https://via.placeholder.com/400x300/20B2AA/0a0a1a?text=Image+12" alt="The Collapse" class="visual-image">
                     </div>
                     <p class="visual-description">The ultimate sacrifice. Time suspended, heartbreaking.</p>
@@ -1143,7 +1214,6 @@
                 <div class="visual-card">
                     <div class="visual-title">13. Death in Son's Arms</div>
                     <div class="visual-image-container">
-                        <!-- Replace this src with your image URL -->
                         <img src="https://via.placeholder.com/400x300/FFB6C1/0a0a1a?text=Image+13" alt="Death in Son's Arms" class="visual-image">
                     </div>
                     <p class="visual-description">Love and loss. Intimate, devastating, beautiful.</p>
@@ -1152,7 +1222,6 @@
                 <div class="visual-card">
                     <div class="visual-title">14. The Legacy</div>
                     <div class="visual-image-container">
-                        <!-- Replace this src with your image URL -->
                         <img src="https://via.placeholder.com/400x300/8B4513/0a0a1a?text=Image+14" alt="The Legacy" class="visual-image">
                     </div>
                     <p class="visual-description">The cycle continues. Hope, immortality through art.</p>
@@ -1194,312 +1263,314 @@
             </ul>
         </div>
 
-        <!-- Detailed Budget Breakdown -->
+        <!-- Detailed Budget Breakdown with Scrollable Container -->
         <div class="slide">
             <h2>Detailed Budget Breakdown</h2>
             <p style="color: var(--pink); margin-bottom: 30px;">Maximum Budget: ₹50,00,000 (₹50 Lakhs)</p>
             
-            <table class="budget-table">
-                <thead>
-                    <tr>
-                        <th>Category</th>
-                        <th>Details</th>
-                        <th>Amount (INR)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>PRE-PRODUCTION</strong></td>
-                        <td></td>
-                        <td><strong>₹2,50,000</strong></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>Script development & rights</td>
-                        <td>₹50,000</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>Location scouting & permissions</td>
-                        <td>₹40,000</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>Casting (4 actors for lead, supporting cast)</td>
-                        <td>₹60,000</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>Production design planning</td>
-                        <td>₹40,000</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>Rehearsals & music training for actors</td>
-                        <td>₹60,000</td>
-                    </tr>
-                    
-                    <tr>
-                        <td><strong>CAST</strong></td>
-                        <td></td>
-                        <td><strong>₹6,00,000</strong></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>Lead actress (4 age ranges - primarily middle-aged & older actors)</td>
-                        <td>₹3,00,000</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>Vikram (Husband)</td>
-                        <td>₹1,20,000</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>Malabika (Guru)</td>
-                        <td>₹80,000</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>Arijit (Son - 3 age ranges)</td>
-                        <td>₹60,000</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>Supporting cast (Rhea, Soumen, parents, etc.)</td>
-                        <td>₹40,000</td>
-                    </tr>
-                    
-                    <tr>
-                        <td><strong>CREW</strong></td>
-                        <td></td>
-                        <td><strong>₹8,50,000</strong></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>Director (35 days)</td>
-                        <td>₹2,50,000</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>Cinematographer + Camera Assistant (35 days)</td>
-                        <td>₹2,00,000</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>Sound recordist (35 days)</td>
-                        <td>₹1,20,000</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>Production Designer + Art team</td>
-                        <td>₹1,50,000</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>Costume designer</td>
-                        <td>₹60,000</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>Makeup & Hair</td>
-                        <td>₹50,000</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>Assistant Director + Production Assistants</td>
-                        <td>₹70,000</td>
-                    </tr>
-                    
-                    <tr>
-                        <td><strong>EQUIPMENT & RENTALS</strong></td>
-                        <td></td>
-                        <td><strong>₹6,00,000</strong></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>Camera package (BMPCC 6K or similar - 35 days)</td>
-                        <td>₹2,50,000</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>Lighting equipment rental</td>
-                        <td>₹2,00,000</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>Sound equipment</td>
-                        <td>₹80,000</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>Grip & electric</td>
-                        <td>₹70,000</td>
-                    </tr>
-                    
-                    <tr>
-                        <td><strong>LOCATIONS & PRODUCTION</strong></td>
-                        <td></td>
-                        <td><strong>₹5,50,000</strong></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>Location fees (homes, Rabindra Sadan, studios)</td>
-                        <td>₹2,00,000</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>Transportation (crew, equipment, cast)</td>
-                        <td>₹1,50,000</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>Food & catering (35 days, crew of ~20)</td>
-                        <td>₹1,20,000</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>Accommodation (non-local crew)</td>
-                        <td>₹80,000</td>
-                    </tr>
-                    
-                    <tr>
-                        <td><strong>ART DEPARTMENT</strong></td>
-                        <td></td>
-                        <td><strong>₹3,50,000</strong></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>Period props & set dressing (1970s-2010s)</td>
-                        <td>₹1,50,000</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>Costumes (multiple periods, lead actress aging)</td>
-                        <td>₹1,20,000</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>Musical instruments (tanpura, harmonium, etc.)</td>
-                        <td>₹40,000</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>Makeup effects (aging, continuity)</td>
-                        <td>₹40,000</td>
-                    </tr>
-                    
-                    <tr>
-                        <td><strong>MUSIC & SOUND</strong></td>
-                        <td></td>
-                        <td><strong>₹3,00,000</strong></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>Music director & composer (fusion track)</td>
-                        <td>₹1,00,000</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>Live recording of Rabindra sangeet performances</td>
-                        <td>₹80,000</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>Background score composition</td>
-                        <td>₹60,000</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>Music rights & licensing</td>
-                        <td>₹60,000</td>
-                    </tr>
-                    
-                    <tr>
-                        <td><strong>POST-PRODUCTION</strong></td>
-                        <td></td>
-                        <td><strong>₹9,00,000</strong></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>Editing (3-4 months)</td>
-                        <td>₹2,50,000</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>Color grading (DaVinci Resolve)</td>
-                        <td>₹1,50,000</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>Sound design & mixing</td>
-                        <td>₹2,00,000</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>Music mixing & mastering</td>
-                        <td>₹1,50,000</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>VFX (minimal - period details, cleanup)</td>
-                        <td>₹80,000</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>Titles & graphics</td>
-                        <td>₹70,000</td>
-                    </tr>
-                    
-                    <tr>
-                        <td><strong>MARKETING & DISTRIBUTION</strong></td>
-                        <td></td>
-                        <td><strong>₹2,50,000</strong></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>Poster design & promotional materials</td>
-                        <td>₹60,000</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>Trailer creation</td>
-                        <td>₹50,000</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>Festival submissions (10-15 festivals)</td>
-                        <td>₹80,000</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>Press kit & screening materials</td>
-                        <td>₹60,000</td>
-                    </tr>
-                    
-                    <tr>
-                        <td><strong>CONTINGENCY & INSURANCE</strong></td>
-                        <td></td>
-                        <td><strong>₹3,00,000</strong></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>Production insurance</td>
-                        <td>₹1,20,000</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>Contingency fund (6% of budget)</td>
-                        <td>₹1,80,000</td>
-                    </tr>
-                    
-                    <tr class="total-row">
-                        <td><strong>TOTAL BUDGET</strong></td>
-                        <td></td>
-                        <td><strong>₹50,00,000</strong></td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="budget-container">
+                <table class="budget-table">
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>Details</th>
+                            <th>Amount (INR)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>PRE-PRODUCTION</strong></td>
+                            <td></td>
+                            <td><strong>₹2,50,000</strong></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Script development & rights</td>
+                            <td>₹50,000</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Location scouting & permissions</td>
+                            <td>₹40,000</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Casting (4 actors for lead, supporting cast)</td>
+                            <td>₹60,000</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Production design planning</td>
+                            <td>₹40,000</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Rehearsals & music training for actors</td>
+                            <td>₹60,000</td>
+                        </tr>
+                        
+                        <tr>
+                            <td><strong>CAST</strong></td>
+                            <td></td>
+                            <td><strong>₹6,00,000</strong></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Lead actress (4 age ranges - primarily middle-aged & older actors)</td>
+                            <td>₹3,00,000</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Vikram (Husband)</td>
+                            <td>₹1,20,000</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Malabika (Guru)</td>
+                            <td>₹80,000</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Arijit (Son - 3 age ranges)</td>
+                            <td>₹60,000</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Supporting cast (Rhea, Soumen, parents, etc.)</td>
+                            <td>₹40,000</td>
+                        </tr>
+                        
+                        <tr>
+                            <td><strong>CREW</strong></td>
+                            <td></td>
+                            <td><strong>₹8,50,000</strong></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Director (35 days)</td>
+                            <td>₹2,50,000</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Cinematographer + Camera Assistant (35 days)</td>
+                            <td>₹2,00,000</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Sound recordist (35 days)</td>
+                            <td>₹1,20,000</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Production Designer + Art team</td>
+                            <td>₹1,50,000</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Costume designer</td>
+                            <td>₹60,000</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Makeup & Hair</td>
+                            <td>₹50,000</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Assistant Director + Production Assistants</td>
+                            <td>₹70,000</td>
+                        </tr>
+                        
+                        <tr>
+                            <td><strong>EQUIPMENT & RENTALS</strong></td>
+                            <td></td>
+                            <td><strong>₹6,00,000</strong></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Camera package (BMPCC 6K or similar - 35 days)</td>
+                            <td>₹2,50,000</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Lighting equipment rental</td>
+                            <td>₹2,00,000</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Sound equipment</td>
+                            <td>₹80,000</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Grip & electric</td>
+                            <td>₹70,000</td>
+                        </tr>
+                        
+                        <tr>
+                            <td><strong>LOCATIONS & PRODUCTION</strong></td>
+                            <td></td>
+                            <td><strong>₹5,50,000</strong></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Location fees (homes, Rabindra Sadan, studios)</td>
+                            <td>₹2,00,000</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Transportation (crew, equipment, cast)</td>
+                            <td>₹1,50,000</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Food & catering (35 days, crew of ~20)</td>
+                            <td>₹1,20,000</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Accommodation (non-local crew)</td>
+                            <td>₹80,000</td>
+                        </tr>
+                        
+                        <tr>
+                            <td><strong>ART DEPARTMENT</strong></td>
+                            <td></td>
+                            <td><strong>₹3,50,000</strong></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Period props & set dressing (1970s-2010s)</td>
+                            <td>₹1,50,000</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Costumes (multiple periods, lead actress aging)</td>
+                            <td>₹1,20,000</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Musical instruments (tanpura, harmonium, etc.)</td>
+                            <td>₹40,000</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Makeup effects (aging, continuity)</td>
+                            <td>₹40,000</td>
+                        </tr>
+                        
+                        <tr>
+                            <td><strong>MUSIC & SOUND</strong></td>
+                            <td></td>
+                            <td><strong>₹3,00,000</strong></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Music director & composer (fusion track)</td>
+                            <td>₹1,00,000</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Live recording of Rabindra sangeet performances</td>
+                            <td>₹80,000</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Background score composition</td>
+                            <td>₹60,000</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Music rights & licensing</td>
+                            <td>₹60,000</td>
+                        </tr>
+                        
+                        <tr>
+                            <td><strong>POST-PRODUCTION</strong></td>
+                            <td></td>
+                            <td><strong>₹9,00,000</strong></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Editing (3-4 months)</td>
+                            <td>₹2,50,000</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Color grading (DaVinci Resolve)</td>
+                            <td>₹1,50,000</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Sound design & mixing</td>
+                            <td>₹2,00,000</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Music mixing & mastering</td>
+                            <td>₹1,50,000</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>VFX (minimal - period details, cleanup)</td>
+                            <td>₹80,000</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Titles & graphics</td>
+                            <td>₹70,000</td>
+                        </tr>
+                        
+                        <tr>
+                            <td><strong>MARKETING & DISTRIBUTION</strong></td>
+                            <td></td>
+                            <td><strong>₹2,50,000</strong></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Poster design & promotional materials</td>
+                            <td>₹60,000</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Trailer creation</td>
+                            <td>₹50,000</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Festival submissions (10-15 festivals)</td>
+                            <td>₹80,000</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Press kit & screening materials</td>
+                            <td>₹60,000</td>
+                        </tr>
+                        
+                        <tr>
+                            <td><strong>CONTINGENCY & INSURANCE</strong></td>
+                            <td></td>
+                            <td><strong>₹3,00,000</strong></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Production insurance</td>
+                            <td>₹1,20,000</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Contingency fund (6% of budget)</td>
+                            <td>₹1,80,000</td>
+                        </tr>
+                        
+                        <tr class="total-row">
+                            <td><strong>TOTAL BUDGET</strong></td>
+                            <td></td>
+                            <td><strong>₹50,00,000</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <!-- Target Audience & Distribution -->
@@ -1578,7 +1649,6 @@
             
             <div class="director-bio-container">
                 <div class="director-image-container">
-                    <!-- Replace this src with your director's image URL -->
                     <img src="https://i.postimg.cc/PqRdQYdR/DIRECTOR-INDIRA-MUKHERJEE.jpg" alt="Indira Dhar" class="director-image">
                 </div>
                 
@@ -1669,7 +1739,7 @@
     <footer class="footer">
         <p>SWARALIPI - The Musical Notation</p>
         <p class="footer-quote">A Film About Art, Sacrifice, and the Price of Devotion</p>
-        <p style="margin-top: 1.5rem;">© 2026 IKA Sudios. All rights reserved.</p>
+        <p style="margin-top: 1.5rem;">© 2026 IKA Studios. All rights reserved.</p>
         <p style="margin-top: 1.5rem;">Created by Adeeb Rabbani</p>
     </footer>
 
